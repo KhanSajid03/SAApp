@@ -4,7 +4,7 @@ msft = yf.Ticker("MSFT")
 
 # get all stock info
 print(msft.quarterly_balance_sheet)
-
+#hi
 # # get historical market data
 # hist = msft.history(period="1mo")
 
