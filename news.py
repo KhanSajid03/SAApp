@@ -5,7 +5,8 @@ from igpls import news_key
 newsapi = NewsApiClient(api_key=news_key)
 
 # /v2/top-headlines
-top_headlines = newsapi.get_top_headlines(q='bitcoin')
+top_headlines = newsapi.get_top_headlines(q='bitcoin',
+                                          language='en')
 
 # # /v2/everything
 # all_articles = newsapi.get_everything(q='bitcoin',
@@ -18,6 +19,6 @@ top_headlines = newsapi.get_top_headlines(q='bitcoin')
 #                                       page=2)
 
 # /v2/top-headlines/sources
-sources = newsapi.get_sources()
+sources = newsapi.get_sources(language='en')
 
 print(sources)
