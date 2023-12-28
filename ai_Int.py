@@ -8,14 +8,14 @@ client = OpenAI(
 )
 
 
-chat_completion = client.chat.completions.create(
+reponse = client.chat.completions.create(
+    model="gpt-3.5",
     messages=[
         {
             "role": "user",
             "content": "Say this is a test",
         }
     ],
-    model="gpt-4",
 )
 
-print(chat_completion)
+print(reponse)
