@@ -1,18 +1,21 @@
-import openai as ai_int
+from openai import OpenAI
 from igpls import ai_key
+import requests, json , os
 
-ai_int.api_key = ai_key
-existing_prompt = ""
-model_engine = "text-davinci-003"
 
-completion = ai_int.Completion.create(
-    engine = model_engine, 
-    prompt = existing_prompt,
-    max_tokens=1024,
-    n=1,
-    stop = None,
-    temperature=0.5, 
+client = OpenAI(
+    api_key=ai_key
 )
 
-response = completion.choices[0].text
-print(response)
+
+chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "user",
+            "content": "Say this is a test",
+        }
+    ],
+    model="gpt-4",
+)
+
+print(chat_completion)
