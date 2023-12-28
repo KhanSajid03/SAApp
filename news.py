@@ -1,24 +1,25 @@
 from newsapi import NewsApiClient
 from igpls import news_key
+import http.client, urllib.parse
+import json
 
-# Init
-newsapi = NewsApiClient(api_key=news_key)
+conn = http.client.HTTPSConnection('api.thenewsapi.com')
 
-# /v2/top-headlines
-top_headlines = newsapi.get_top_headlines(q='bitcoin',
-                                          language='en')
+params = urllib.parse.urlencode({
+    'api_token': news_key,
+    'categories': 'business',
+    'search': 'microsoft',
+    'limit': 3,
+    'language': 'en'
+    })
 
-# # /v2/everything
-# all_articles = newsapi.get_everything(q='bitcoin',
-#                                       sources='bbc-news,the-verge',
-#                                       domains='bbc.co.uk,techcrunch.com',
-#                                       from_param='2017-12-01',
-#                                       to='2017-12-12',
-#                                       language='en',
-#                                       sort_by='relevancy',
-#                                       page=2)
+conn.request('GET', '/v1/news/all?{}'.format(params))
 
-# /v2/top-headlines/sources
-sources = newsapi.get_sources(language='en')
+res = conn.getresponse()
+data = res.read()
+news = data.decode('utf-8')
+temp = json.loads(news)
+sources = temp['data']
 
-print(sources)
+for i in sources:
+    print(i['title'])
