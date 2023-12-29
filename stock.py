@@ -1,56 +1,56 @@
 import yfinance as yf
 
-msft = yf.Ticker("MSFT")
+def calculate_PEG(ticker):
+    stock = yf.Ticker(ticker)
+    pe_ratio = stock.info.get('trailingPE')
+    peg_ratio = None
 
-# get all stock info
-print(msft.quarterly_balance_sheet)
-#hi
-# # get historical market data
-# hist = msft.history(period="1mo")
+    if pe_ratio is not None:
+        peg_ratio = pe_ratio / stock.info.get('pegRatio', None)
 
-# # show meta information about the history (requires history() to be called first)
-# msft.history_metadata
+    return peg_ratio
 
-# # show actions (dividends, splits, capital gains)
-# msft.actions
-# msft.dividends
-# msft.splits
-# msft.capital_gains  # only for mutual funds & etfs
+def calculate_PS_ratio(ticker):
+    stock = yf.Ticker(ticker)
+    price = stock.info.get('regularMarketPrice')
+    revenue_per_share = stock.info.get('revenuePerShare')
+    ps_ratio = None
 
-# # show share count
-# msft.get_shares_full(start="2022-01-01", end=None)
+    if price is not None and revenue_per_share is not None and revenue_per_share != 0:
+        ps_ratio = price / revenue_per_share
 
-# # show financials:
-# # - income statement
-# msft.income_stmt
-# msft.quarterly_income_stmt
-# # - balance sheet
-# msft.balance_sheet
-# msft.quarterly_balance_sheet
-# # - cash flow statement
-# msft.cashflow
-# msft.quarterly_cashflow
-# # see `Ticker.get_income_stmt()` for more options
+    return ps_ratio
 
-# # show holders
-# msft.major_holders
-# msft.institutional_holders
-# msft.mutualfund_holders
+def sendUserInput():
+    user_ticker = input("Enter the stock ticker symbol: ")
+    return user_ticker
 
-# # Show future and historic earnings dates, returns at most next 4 quarters and last 8 quarters by default. 
-# # Note: If more are needed use msft.get_earnings_dates(limit=XX) with increased limit argument.
-# msft.earnings_dates
+def calculate_PE_ratio(ticker):
+    stock = yf.Ticker(ticker)
+    pe_ratio = stock.info.get('trailingPE')
+    return pe_ratio
 
-# # show ISIN code - *experimental*
-# # ISIN = International Securities Identification Number
-# msft.isin
+def main():
+    user_ticker = sendUserInput()
 
-# # show options expirations
-# msft.options
+    peg = calculate_PEG(user_ticker)
+    ps_ratio = calculate_PS_ratio(user_ticker)
+    pe_ratio = calculate_PE_ratio(user_ticker)
 
-# # show news
-# msft.news
+    if peg is not None:
+        print(f"PEG(Price/earnings to growth) Ratio: {peg:.2f}")
+    else:
+        print("PEG(Price/earnings to growth) Ratio not available for this stock.")
 
-# # get option chain for specific expiration
-# opt = msft.option_chain('YYYY-MM-DD')
-# # data available via: opt.calls, opt.puts
+    if ps_ratio is not None:
+        print(f"P/S(Price to sales) Ratio: {ps_ratio:.2f}")
+    else:
+        print("P/S(Price to sales) Ratio not available for this stock.")
+
+    if pe_ratio is not None:
+        print(f"P/E(Price to earnings) Ratio: {pe_ratio:.2f}")
+    else:
+        print("P/E(Price to earnings) Ratio not available for this stock.")
+#add code in the front end to talk about how to interpret this data and ratios to perform stock analysis
+if __name__ == "__main__":
+    main()
